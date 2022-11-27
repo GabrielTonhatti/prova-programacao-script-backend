@@ -14,12 +14,14 @@ public class EquipeResponse {
 
     private Long id;
     private String nome;
+    private CidadeResponse cidade;
 
     public static EquipeResponse of(Equipe equipe) {
         return EquipeResponse
                 .builder()
                 .id(equipe.getId())
                 .nome(equipe.getNome())
+                .cidade(CidadeResponse.of(equipe.getCidade()))
                 .build();
     }
 }

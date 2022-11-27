@@ -19,7 +19,7 @@ public class Jogo {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_JOGO")
     @SequenceGenerator(name = "SEQ_JOGO", sequenceName = "SEQ_JOGO", allocationSize = 1)
     private Long id;
 

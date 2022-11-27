@@ -17,7 +17,7 @@ public class Tecnico {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_TECNICO")
     @SequenceGenerator(name = "SEQ_TECNICO", sequenceName = "SEQ_TECNICO", allocationSize = 1)
     private Long id;
 
