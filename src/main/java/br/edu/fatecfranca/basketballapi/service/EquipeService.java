@@ -47,6 +47,7 @@ public class EquipeService {
 
     @Transactional
     public EquipeResponse save(EquipeRequest request) {
+        // TOOD Alterar para salvar a equipe antes do jogador
         var jogadores = validarQuantidadeJogadores(request);
         var tecnicos = validarQuantidadeTecnicos(request);
         var equipe = Equipe.of(request);
