@@ -1,6 +1,7 @@
 package br.edu.fatecfranca.basketballapi.model;
 
 import br.edu.fatecfranca.basketballapi.dto.TecnicoRequest;
+import br.edu.fatecfranca.basketballapi.enums.FuncaoTecnico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,11 @@ public class Tecnico {
     @Column(name = "NOME")
     private String nome;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "FUNCAO")
+    @Enumerated(EnumType.STRING)
+    private FuncaoTecnico funcao;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "FK_EQUIPE", foreignKey = @ForeignKey(name = "FK_EQUIPE"), referencedColumnName = "id")
     private Equipe equipe;
 
@@ -32,7 +37,7 @@ public class Tecnico {
         return Tecnico
                 .builder()
                 .nome(request.getNome())
-                .equipe(new Equipe(request.getEquipeId()))
+                .funcao(request.getFuncao())
                 .build();
     }
 }

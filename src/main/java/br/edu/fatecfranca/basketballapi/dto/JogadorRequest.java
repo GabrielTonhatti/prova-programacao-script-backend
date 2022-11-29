@@ -16,6 +16,5 @@ public class JogadorRequest {
     @NotBlank
     private String nome;
 
-    @NotNull
     private Long equipeId;
 }

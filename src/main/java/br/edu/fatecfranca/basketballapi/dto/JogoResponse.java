@@ -1,6 +1,7 @@
 package br.edu.fatecfranca.basketballapi.dto;
 
 import br.edu.fatecfranca.basketballapi.model.Jogo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import static br.edu.fatecfranca.basketballapi.utils.DateUtils.localDateTimeToSt
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JogoResponse {
 
     private Long id;

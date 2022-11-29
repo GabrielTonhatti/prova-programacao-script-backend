@@ -29,9 +29,9 @@ public class Jogador {
     private Equipe equipe;
 
     public static Jogador of(JogadorRequest request) {
-        return Jogador.builder()
+        return Jogador
+                .builder()
                 .nome(request.getNome())
-                .equipe(new Equipe(request.getEquipeId()))
                 .build();
     }
 }

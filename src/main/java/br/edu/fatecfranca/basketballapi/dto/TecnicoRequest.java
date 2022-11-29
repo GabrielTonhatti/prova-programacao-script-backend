@@ -1,5 +1,6 @@
 package br.edu.fatecfranca.basketballapi.dto;
 
+import br.edu.fatecfranca.basketballapi.enums.FuncaoTecnico;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,5 +18,5 @@ public class TecnicoRequest {
     private String nome;
 
     @NotNull
-    private Long equipeId;
+    private FuncaoTecnico funcao;
 }

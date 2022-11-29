@@ -2,6 +2,7 @@ package br.edu.fatecfranca.basketballapi.service;
 
 import br.edu.fatecfranca.basketballapi.dto.JogoRequest;
 import br.edu.fatecfranca.basketballapi.dto.JogoResponse;
+import br.edu.fatecfranca.basketballapi.handler.ErrorException;
 import br.edu.fatecfranca.basketballapi.model.Equipe;
 import br.edu.fatecfranca.basketballapi.model.Jogo;
 import br.edu.fatecfranca.basketballapi.repository.JogoRepository;
@@ -29,7 +30,7 @@ public class JogoService {
 
     private Jogo getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Jogo não encontrado"));
+                .orElseThrow(() -> new ErrorException("Jogo não encontrado"));
     }
 
     @Transactional
@@ -55,7 +56,7 @@ public class JogoService {
         try {
             repository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Jogo não encontrado");
+            throw new ErrorException("Jogo não encontrado");
         }
     }
 

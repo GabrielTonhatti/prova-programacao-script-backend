@@ -2,6 +2,7 @@ package br.edu.fatecfranca.basketballapi.service;
 
 import br.edu.fatecfranca.basketballapi.dto.CidadeRequest;
 import br.edu.fatecfranca.basketballapi.dto.CidadeResponse;
+import br.edu.fatecfranca.basketballapi.handler.ErrorException;
 import br.edu.fatecfranca.basketballapi.model.Cidade;
 import br.edu.fatecfranca.basketballapi.repository.CidadeRepository;
 import org.springframework.beans.BeanUtils;
@@ -28,7 +29,7 @@ public class CidadeService {
 
     private Cidade getById(Long id) {
         return repository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ErrorException("Cidade não encontrada"));
     }
 
     @Transactional
@@ -52,7 +53,7 @@ public class CidadeService {
         try {
             repository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não foi possível deletar a cidade");
+            throw new ErrorException("Não foi possível deletar a cidade");
         }
     }
 

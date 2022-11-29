@@ -2,9 +2,10 @@ package br.edu.fatecfranca.basketballapi.service;
 
 import br.edu.fatecfranca.basketballapi.dto.TecnicoRequest;
 import br.edu.fatecfranca.basketballapi.dto.TecnicoResponse;
-import br.edu.fatecfranca.basketballapi.model.Equipe;
+import br.edu.fatecfranca.basketballapi.handler.ErrorException;
 import br.edu.fatecfranca.basketballapi.model.Tecnico;
 import br.edu.fatecfranca.basketballapi.repository.TecnicoRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,9 +27,9 @@ public class TecnicoService {
         return TecnicoResponse.of(getById(id));
     }
 
-    private Tecnico getById(Long id) {
+    public Tecnico getById(Long id) {
         return repository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ErrorException("Técnico não encontrado"));
     }
 
     @Transactional
@@ -39,11 +40,15 @@ public class TecnicoService {
     }
 
     @Transactional
+    public Tecnico save(Tecnico tecnico) {
+        return repository.save(tecnico);
+    }
+
+    @Transactional
     public TecnicoResponse update(Long id, TecnicoRequest request) {
         var tecnico = getById(id);
 
-        tecnico.setNome(request.getNome());
-        tecnico.setEquipe(new Equipe(request.getEquipeId()));
+        BeanUtils.copyProperties(request, tecnico, "id");
 
         return TecnicoResponse.of(repository.save(tecnico));
     }
@@ -53,7 +58,7 @@ public class TecnicoService {
         try {
             repository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException("Não foi possível deletar o técnico");
+            throw new ErrorException("Não foi possível deletar o técnico");
         }
     }
 
