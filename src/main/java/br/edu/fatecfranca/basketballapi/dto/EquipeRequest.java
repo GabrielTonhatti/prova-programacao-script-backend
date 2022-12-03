@@ -22,10 +22,4 @@ public class EquipeRequest {
     @NotNull
     private Long cidadeId;
 
-    @NotEmpty
-    private Set<Long> jogadoresIds;
-
-    @NotEmpty
-    private Set<Long> tecnicosIds;
-
 }

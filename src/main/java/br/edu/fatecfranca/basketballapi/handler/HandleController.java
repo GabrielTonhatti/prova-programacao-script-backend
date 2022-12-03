@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class HandleController {
 
+    private static final String GENERIC_ERROR_MESSAGE = "Ocorreu um erro interno inesperado no sistema. "
+            + "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
     @Autowired
     private MessageSource messageSource;
 
@@ -43,5 +45,12 @@ public class HandleController {
                     return new ErrorMessage(message, fieldError.getField());
                 })
                 .collect(Collectors.toList());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public List<ErrorMessage> handleUncaught(Exception ex) {
+        return List.of(new ErrorMessage(GENERIC_ERROR_MESSAGE));
     }
 }

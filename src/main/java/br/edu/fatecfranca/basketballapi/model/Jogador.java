@@ -28,10 +28,11 @@ public class Jogador {
     @JoinColumn(name = "FK_EQUIPE", foreignKey = @ForeignKey(name = "FK_EQUIPE"), referencedColumnName = "id")
     private Equipe equipe;
 
-    public static Jogador of(JogadorRequest request) {
+    public static Jogador of(JogadorRequest request, Equipe equipe) {
         return Jogador
                 .builder()
                 .nome(request.getNome())
+                .equipe(equipe)
                 .build();
     }
 }

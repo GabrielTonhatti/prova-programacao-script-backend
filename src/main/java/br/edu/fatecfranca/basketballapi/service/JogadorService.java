@@ -18,6 +18,8 @@ public class JogadorService {
 
     @Autowired
     private JogadorRepository repository;
+    @Autowired
+    private EquipeService equipeService;
 
     public Page<JogadorResponse> findAll(Pageable page) {
         return repository.findAll(page)
@@ -34,26 +36,28 @@ public class JogadorService {
     }
 
     @Transactional
-    public Jogador save(Jogador jogador) {
-        return repository.save(jogador);
-    }
-
-    @Transactional
     public JogadorResponse save(JogadorRequest request) {
-        var jogador = Jogador.of(request);
+        var equipe = equipeService.getById(request.getEquipeId());
+        validarQuantidadeJogadores(equipe);
+
+        var jogador = Jogador.of(request, equipe);
 
         return JogadorResponse.of(repository.save(jogador));
     }
 
+    private void validarQuantidadeJogadores(Equipe equipe) {
+        if (equipe.getJogadores().size() > 12) {
+            throw new ErrorException("Uma equipe só pode ter no máximo 12 jogadores");
+        }
+    }
+
     @Transactional
     public JogadorResponse update(Long id, JogadorRequest request) {
+        var equipe = equipeService.getById(request.getEquipeId());
         var jogador = getById(id);
 
         BeanUtils.copyProperties(request, jogador, "id");
-
-        if (request.getEquipeId() != null) {
-            jogador.setEquipe(new Equipe(request.getEquipeId()));
-        }
+        jogador.setEquipe(equipe);
 
         return JogadorResponse.of(repository.save(jogador));
     }
