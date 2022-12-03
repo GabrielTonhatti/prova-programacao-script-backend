@@ -42,55 +42,6 @@ public class EquipeService {
         return EquipeResponse.of(equipe);
     }
 
-//    private Set<Tecnico> validarQuantidadeTecnicos(EquipeRequest request) {
-//        if (request.getTecnicosIds().size() > 3) {
-//            throw new ErrorException("Uma equipe só pode ter no máximo 3 técnicos");
-//        }
-//
-//        var tecnicos = request.getTecnicosIds()
-//                .stream()
-//                .map(tecnicoService::getById)
-//                .collect(Collectors.toSet());
-//
-//        var tecnicosOfensivos = tecnicos
-//                .stream()
-//                .filter(tecnico -> tecnico.getFuncao() == FuncaoTecnico.OFENSIVO)
-//                .count();
-//
-//        var tecnicosDefensivos = tecnicos
-//                .stream()
-//                .filter(tecnico -> tecnico.getFuncao() == FuncaoTecnico.DEFENSIVO)
-//                .count();
-//
-//        var tecnicosPreparoFisico = tecnicos
-//                .stream()
-//                .filter(tecnico -> tecnico.getFuncao() == FuncaoTecnico.PREPARADOR_FISICO)
-//                .count();
-//
-//        if (tecnicosOfensivos > 1) {
-//            throw new ErrorException("Uma equipe só pode ter no máximo 1 técnico ofensivo");
-//        } else if (tecnicosDefensivos > 1) {
-//            throw new ErrorException("Uma equipe só pode ter no máximo 1 técnico defensivo");
-//        } else if (tecnicosPreparoFisico > 1) {
-//            throw new ErrorException("Uma equipe só pode ter no máximo 1 técnico preparador físico");
-//        }
-//
-//        return tecnicos;
-//    }
-
-//    private Set<Jogador> validarQuantidadeJogadores(EquipeRequest request) {
-//        if (request.getJogadoresIds().size() < 9) {
-//            throw new ErrorException("Equipe deve ter no mínimo 9 jogadores");
-//        } else if (request.getJogadoresIds().size() > 12) {
-//            throw new ErrorException("Equipe deve ter no máximo 12 jogadores");
-//        }
-//
-//        return request.getJogadoresIds()
-//                .stream()
-//                .map(jogadorService::getById)
-//                .collect(Collectors.toSet());
-//    }
-
     @Transactional
     public EquipeResponse update(Long id, EquipeRequest request) {
         var equipe = getById(id);

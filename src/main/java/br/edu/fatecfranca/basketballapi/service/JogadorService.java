@@ -46,7 +46,7 @@ public class JogadorService {
     }
 
     private void validarQuantidadeJogadores(Equipe equipe) {
-        if (equipe.getJogadores().size() > 12) {
+        if (equipe.getJogadores().size() >= 12) {
             throw new ErrorException("Uma equipe só pode ter no máximo 12 jogadores");
         }
     }
@@ -54,6 +54,7 @@ public class JogadorService {
     @Transactional
     public JogadorResponse update(Long id, JogadorRequest request) {
         var equipe = equipeService.getById(request.getEquipeId());
+        validarQuantidadeJogadores(equipe);
         var jogador = getById(id);
 
         BeanUtils.copyProperties(request, jogador, "id");

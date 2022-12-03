@@ -3,6 +3,7 @@ package br.edu.fatecfranca.basketballapi.service;
 import br.edu.fatecfranca.basketballapi.dto.TecnicoRequest;
 import br.edu.fatecfranca.basketballapi.dto.TecnicoResponse;
 import br.edu.fatecfranca.basketballapi.handler.ErrorException;
+import br.edu.fatecfranca.basketballapi.model.Equipe;
 import br.edu.fatecfranca.basketballapi.model.Tecnico;
 import br.edu.fatecfranca.basketballapi.repository.TecnicoRepository;
 import org.springframework.beans.BeanUtils;
@@ -17,6 +18,8 @@ public class TecnicoService {
 
     @Autowired
     private TecnicoRepository repository;
+    @Autowired
+    private EquipeService equipeService;
 
     public Page<TecnicoResponse> findAll(Pageable page) {
         return repository.findAll(page)
@@ -34,18 +37,43 @@ public class TecnicoService {
 
     @Transactional
     public TecnicoResponse save(TecnicoRequest request) {
-        var tecnico = Tecnico.of(request);
+        var equipe = equipeService.getById(request.getEquipeId());
+        validarQuantidadeTecnicos(equipe, request);
+        var tecnico = Tecnico.of(request, equipe);
 
         return TecnicoResponse.of(repository.save(tecnico));
     }
 
-    @Transactional
-    public Tecnico save(Tecnico tecnico) {
-        return repository.save(tecnico);
+    private void validarQuantidadeTecnicos(Equipe equipe, TecnicoRequest request) {
+        var tecnicoDefensivo = equipe.getTecnicos()
+                .stream()
+                .filter(Tecnico::isDefensivo)
+                .findFirst()
+                .orElse(null);
+        var tecnicoOfensivo = equipe.getTecnicos()
+                .stream()
+                .filter(Tecnico::isOfensivo)
+                .findFirst()
+                .orElse(null);
+        var tecniisPreparadorFisico = equipe.getTecnicos()
+                .stream()
+                .filter(Tecnico::isPreparadorFisico)
+                .findFirst()
+                .orElse(null);
+
+        if (request.isDefensivo() && tecnicoDefensivo != null) {
+            throw new ErrorException("Uma equipe só pode ter um técnico defensivo");
+        } else if (request.isOfensivo() && tecnicoOfensivo != null) {
+            throw new ErrorException("Uma equipe só pode ter um técnico ofensivo");
+        } else if (request.isPreparadorFisico() && tecniisPreparadorFisico != null) {
+            throw new ErrorException("Uma equipe só pode ter um técnico preparador físico");
+        }
     }
 
     @Transactional
     public TecnicoResponse update(Long id, TecnicoRequest request) {
+        var equipe = equipeService.getById(request.getEquipeId());
+        validarQuantidadeTecnicos(equipe, request);
         var tecnico = getById(id);
 
         BeanUtils.copyProperties(request, tecnico, "id");

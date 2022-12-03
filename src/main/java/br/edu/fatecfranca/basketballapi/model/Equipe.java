@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,10 +31,10 @@ public class Equipe {
     private Cidade cidade;
 
     @OneToMany(mappedBy = "equipe", fetch = FetchType.LAZY)
-    private Set<Jogador> jogadores;
+    private List<Jogador> jogadores;
 
     @OneToMany(mappedBy = "equipe", fetch = FetchType.LAZY)
-    private Set<Tecnico> tecnicos;
+    private List<Tecnico> tecnicos;
 
     public Equipe(Long id) {
         this.id = id;

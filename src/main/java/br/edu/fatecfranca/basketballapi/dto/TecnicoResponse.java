@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +20,6 @@ public class TecnicoResponse {
 
     private Long id;
     private String nome;
-    private EquipeResponse equipe;
     private String funcao;
 
     public static TecnicoResponse of(Tecnico tecnico) {
@@ -28,12 +27,11 @@ public class TecnicoResponse {
                 .builder()
                 .id(tecnico.getId())
                 .nome(tecnico.getNome())
-                .equipe(Optional.ofNullable(tecnico.getEquipe()).map(EquipeResponse::of).orElse(null))
                 .funcao(tecnico.getFuncao().getDescricao())
                 .build();
     }
 
-    public static Set<TecnicoResponse> of(Set<Tecnico> tecnicos) {
+    public static Set<TecnicoResponse> of(List<Tecnico> tecnicos) {
         return tecnicos.stream()
                 .map(TecnicoResponse::of)
                 .collect(Collectors.toSet());

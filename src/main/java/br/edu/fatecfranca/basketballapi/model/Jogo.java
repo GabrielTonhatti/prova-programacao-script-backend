@@ -40,14 +40,14 @@ public class Jogo {
     @Column(name = "DATA")
     private LocalDateTime data;
 
-    public static Jogo of(JogoRequest request) {
+    public static Jogo of(JogoRequest request, Equipe equipeCasa, Equipe equipeVisitante) {
         return Jogo
                 .builder()
                 .data(LocalDateTime.now())
                 .pontosCasa(request.getPontosCasa())
                 .pontosVisitante(request.getPontosVisitante())
-                .equipeCasa(new Equipe(request.getEquipeCasaId()))
-                .equipeVisitante(new Equipe(request.getEquipeVisitanteId()))
+                .equipeCasa(equipeCasa)
+                .equipeVisitante(equipeVisitante)
                 .build();
     }
 }

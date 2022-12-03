@@ -18,6 +18,8 @@ public class JogoService {
 
     @Autowired
     private JogoRepository repository;
+    @Autowired
+    private EquipeService equipeService;
 
     public Page<JogoResponse> findAll(Pageable page) {
         return repository.findAll(page)
@@ -35,9 +37,23 @@ public class JogoService {
 
     @Transactional
     public JogoResponse save(JogoRequest request) {
-        var jogo = Jogo.of(request);
+        var equipeCasa = equipeService.getById(request.getEquipeCasaId());
+        var equipeVisitante = equipeService.getById(request.getEquipeVisitanteId());
+        validarEquipes(equipeCasa, equipeVisitante);
+
+        var jogo = Jogo.of(request, equipeCasa, equipeVisitante);
 
         return JogoResponse.of(repository.save(jogo));
+    }
+
+    private void validarEquipes(Equipe equipeCasa, Equipe equipeVisitante) {
+        if (equipeCasa.getJogadores().size() < 9) {
+            throw new ErrorException("A equipe da casa deve ter no mínimo 9 jogadores");
+        }
+
+        if (equipeVisitante.getJogadores().size() < 9) {
+            throw new ErrorException("A equipe visitante deve ter no mínimo 9 jogadores");
+        }
     }
 
     @Transactional

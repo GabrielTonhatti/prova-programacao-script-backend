@@ -19,4 +19,19 @@ public class TecnicoRequest {
 
     @NotNull
     private FuncaoTecnico funcao;
+
+    @NotNull
+    private Long equipeId;
+
+    public boolean isDefensivo() {
+        return this.funcao.equals(FuncaoTecnico.DEFENSIVO);
+    }
+
+    public boolean isOfensivo() {
+        return this.funcao.equals(FuncaoTecnico.OFENSIVO);
+    }
+
+    public boolean isPreparadorFisico() {
+        return this.funcao.equals(FuncaoTecnico.PREPARADOR_FISICO);
+    }
 }

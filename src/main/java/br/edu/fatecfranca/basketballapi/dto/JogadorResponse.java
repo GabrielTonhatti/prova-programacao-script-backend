@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,18 +21,16 @@ public class JogadorResponse {
 
     private Long id;
     private String nome;
-    private EquipeResponse equipe;
 
     public static JogadorResponse of(Jogador jogador) {
         return JogadorResponse
                 .builder()
                 .id(jogador.getId())
                 .nome(jogador.getNome())
-                .equipe(EquipeResponse.of(jogador.getEquipe()))
                 .build();
     }
 
-    public static Set<JogadorResponse> of(Set<Jogador> jogadores) {
+    public static Set<JogadorResponse> of(List<Jogador> jogadores) {
         return jogadores.stream()
                 .map(JogadorResponse::of)
                 .collect(Collectors.toSet());

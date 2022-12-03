@@ -33,11 +33,24 @@ public class Tecnico {
     @JoinColumn(name = "FK_EQUIPE", foreignKey = @ForeignKey(name = "FK_EQUIPE"), referencedColumnName = "id")
     private Equipe equipe;
 
-    public static Tecnico of(TecnicoRequest request) {
+    public static Tecnico of(TecnicoRequest request, Equipe equipe) {
         return Tecnico
                 .builder()
                 .nome(request.getNome())
                 .funcao(request.getFuncao())
+                .equipe(equipe)
                 .build();
+    }
+
+    public boolean isDefensivo() {
+        return this.funcao.equals(FuncaoTecnico.DEFENSIVO);
+    }
+
+    public boolean isOfensivo() {
+        return this.funcao.equals(FuncaoTecnico.OFENSIVO);
+    }
+
+    public boolean isPreparadorFisico() {
+        return this.funcao.equals(FuncaoTecnico.PREPARADOR_FISICO);
     }
 }
