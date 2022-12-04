@@ -25,8 +25,8 @@ public class HandleController {
     @ResponseBody
     @ExceptionHandler(ErrorException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public List<ErrorMessage> validationError(ErrorException ex) {
-        return List.of(new ErrorMessage(ex.getMessage(), ex.getField()));
+    public ErrorMessage validationError(ErrorException ex) {
+        return new ErrorMessage(ex.getMessage(), ex.getField());
     }
 
     @ResponseBody
@@ -50,7 +50,7 @@ public class HandleController {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public List<ErrorMessage> handleUncaught(Exception ex) {
-        return List.of(new ErrorMessage(GENERIC_ERROR_MESSAGE));
+    public ErrorMessage handleUncaught(Exception ex) {
+        return new ErrorMessage(GENERIC_ERROR_MESSAGE);
     }
 }

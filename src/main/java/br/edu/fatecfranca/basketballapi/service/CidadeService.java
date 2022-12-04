@@ -2,6 +2,7 @@ package br.edu.fatecfranca.basketballapi.service;
 
 import br.edu.fatecfranca.basketballapi.dto.CidadeRequest;
 import br.edu.fatecfranca.basketballapi.dto.CidadeResponse;
+import br.edu.fatecfranca.basketballapi.dto.SelectResponse;
 import br.edu.fatecfranca.basketballapi.handler.ErrorException;
 import br.edu.fatecfranca.basketballapi.model.Cidade;
 import br.edu.fatecfranca.basketballapi.repository.CidadeRepository;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class CidadeService {
@@ -57,4 +60,10 @@ public class CidadeService {
         }
     }
 
+    public List<SelectResponse> findAllSelect() {
+        return repository.findAll()
+                .stream()
+                .map(cidade -> SelectResponse.of(cidade.getNome(), cidade.getId()))
+                .toList();
+    }
 }
