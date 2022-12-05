@@ -13,6 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+import java.util.Optional;
+
 @Service
 public class TecnicoService {
 
@@ -38,26 +41,27 @@ public class TecnicoService {
     @Transactional
     public TecnicoResponse save(TecnicoRequest request) {
         var equipe = equipeService.getById(request.getEquipeId());
-        validarQuantidadeTecnicos(equipe, request);
         var tecnico = Tecnico.of(request, equipe);
+        validarQuantidadeTecnicos(equipe, request, tecnico);
 
         return TecnicoResponse.of(repository.save(tecnico));
     }
 
-    private void validarQuantidadeTecnicos(Equipe equipe, TecnicoRequest request) {
+    private void validarQuantidadeTecnicos(Equipe equipe, TecnicoRequest request, Tecnico tecnico) {
+        var tecnicoId = Optional.ofNullable(tecnico).map(Tecnico::getId).orElse(0L);
         var tecnicoDefensivo = equipe.getTecnicos()
                 .stream()
-                .filter(Tecnico::isDefensivo)
+                .filter(tecnicoAtual -> tecnicoAtual.isDefensivo() && !Objects.equals(tecnicoAtual.getId(), tecnicoId))
                 .findFirst()
                 .orElse(null);
         var tecnicoOfensivo = equipe.getTecnicos()
                 .stream()
-                .filter(Tecnico::isOfensivo)
+                .filter(tecnicoAtual -> tecnicoAtual.isOfensivo() && !Objects.equals(tecnicoAtual.getId(), tecnicoId))
                 .findFirst()
                 .orElse(null);
         var tecniisPreparadorFisico = equipe.getTecnicos()
                 .stream()
-                .filter(Tecnico::isPreparadorFisico)
+                .filter(tecnicoAtual -> tecnicoAtual.isPreparadorFisico() && !Objects.equals(tecnicoAtual.getId(), tecnicoId))
                 .findFirst()
                 .orElse(null);
 
@@ -72,9 +76,9 @@ public class TecnicoService {
 
     @Transactional
     public TecnicoResponse update(Long id, TecnicoRequest request) {
-        var equipe = equipeService.getById(request.getEquipeId());
-        validarQuantidadeTecnicos(equipe, request);
         var tecnico = getById(id);
+        var equipe = equipeService.getById(request.getEquipeId());
+        validarQuantidadeTecnicos(equipe, request, tecnico);
 
         BeanUtils.copyProperties(request, tecnico, "id");
 

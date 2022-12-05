@@ -2,12 +2,15 @@ package br.edu.fatecfranca.basketballapi.controller;
 
 import br.edu.fatecfranca.basketballapi.dto.EquipeRequest;
 import br.edu.fatecfranca.basketballapi.dto.EquipeResponse;
+import br.edu.fatecfranca.basketballapi.dto.SelectResponse;
 import br.edu.fatecfranca.basketballapi.service.EquipeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/equipes")
@@ -19,6 +22,11 @@ public class EquipeController {
     @GetMapping
     public Page<EquipeResponse> findAll(Pageable page) {
         return service.findAll(page);
+    }
+
+    @GetMapping("select")
+    public List<SelectResponse> findAllSelect() {
+        return service.findAllSelect();
     }
 
     @GetMapping("{id}")

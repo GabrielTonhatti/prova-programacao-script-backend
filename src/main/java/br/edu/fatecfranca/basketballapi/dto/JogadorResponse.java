@@ -21,12 +21,16 @@ public class JogadorResponse {
 
     private Long id;
     private String nome;
+    private String equipe;
+    private Long equipeId;
 
     public static JogadorResponse of(Jogador jogador) {
         return JogadorResponse
                 .builder()
                 .id(jogador.getId())
                 .nome(jogador.getNome())
+                .equipe(jogador.getEquipe().getNome())
+                .equipeId(jogador.getEquipe().getId())
                 .build();
     }
 

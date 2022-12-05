@@ -54,6 +54,14 @@ public class JogoService {
         if (equipeVisitante.getJogadores().size() < 9) {
             throw new ErrorException("A equipe visitante deve ter no mínimo 9 jogadores");
         }
+
+        if (equipeCasa.getTecnicos().size() < 3) {
+            throw new ErrorException("A equipe da casa deve ter no mínimo 3 técnicos");
+        }
+
+        if (equipeVisitante.getTecnicos().size() < 3) {
+            throw new ErrorException("A equipe visitante deve ter no mínimo 3 técnicos");
+        }
     }
 
     @Transactional

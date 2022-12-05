@@ -2,6 +2,7 @@ package br.edu.fatecfranca.basketballapi.service;
 
 import br.edu.fatecfranca.basketballapi.dto.EquipeRequest;
 import br.edu.fatecfranca.basketballapi.dto.EquipeResponse;
+import br.edu.fatecfranca.basketballapi.dto.SelectResponse;
 import br.edu.fatecfranca.basketballapi.handler.ErrorException;
 import br.edu.fatecfranca.basketballapi.model.Cidade;
 import br.edu.fatecfranca.basketballapi.model.Equipe;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class EquipeService {
@@ -59,5 +62,12 @@ public class EquipeService {
         } catch (Exception e) {
             throw new ErrorException("Não foi possível deletar a equipe");
         }
+    }
+
+    public List<SelectResponse> findAllSelect() {
+        return repository.findAll()
+                .stream()
+                .map(equipe -> SelectResponse.of(equipe.getNome(), equipe.getId()))
+                .toList();
     }
 }

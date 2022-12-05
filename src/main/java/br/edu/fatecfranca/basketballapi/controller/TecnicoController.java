@@ -1,13 +1,17 @@
 package br.edu.fatecfranca.basketballapi.controller;
 
+import br.edu.fatecfranca.basketballapi.dto.SelectResponse;
 import br.edu.fatecfranca.basketballapi.dto.TecnicoRequest;
 import br.edu.fatecfranca.basketballapi.dto.TecnicoResponse;
+import br.edu.fatecfranca.basketballapi.enums.FuncaoTecnico;
 import br.edu.fatecfranca.basketballapi.service.TecnicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/tecnicos")
@@ -24,6 +28,11 @@ public class TecnicoController {
     @GetMapping("{id}")
     public TecnicoResponse findById(@PathVariable Long id) {
         return service.findById(id);
+    }
+
+    @GetMapping("funcoes")
+    public List<SelectResponse> getFuncoes() {
+        return FuncaoTecnico.of();
     }
 
     @PostMapping

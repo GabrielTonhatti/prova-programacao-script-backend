@@ -1,5 +1,6 @@
 package br.edu.fatecfranca.basketballapi.dto;
 
+import br.edu.fatecfranca.basketballapi.enums.FuncaoTecnico;
 import br.edu.fatecfranca.basketballapi.model.Tecnico;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -20,14 +21,20 @@ public class TecnicoResponse {
 
     private Long id;
     private String nome;
+    private FuncaoTecnico funcaoCodigo;
     private String funcao;
+    private String equipe;
+    private Long equipeId;
 
     public static TecnicoResponse of(Tecnico tecnico) {
         return TecnicoResponse
                 .builder()
                 .id(tecnico.getId())
                 .nome(tecnico.getNome())
+                .equipeId(tecnico.getEquipe().getId())
+                .equipe(tecnico.getEquipe().getNome())
                 .funcao(tecnico.getFuncao().getDescricao())
+                .funcaoCodigo(tecnico.getFuncao())
                 .build();
     }
 
