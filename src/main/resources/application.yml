@@ -10,9 +10,9 @@ spring:
           auto: none
 
   datasource:
-    url: jdbc:postgresql://localhost:5433/basketball
-    username: postgres
-    password: p0stgr3s
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driverClassName: org.postgresql.Driver
     hikari:
       maximum-pool-size: 2
